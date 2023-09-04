@@ -1,0 +1,6 @@
+<dependencies>
+  <androidPackages>
+    <androidPackage spec="androidx.work:work-runtime:2.7.1"/>
+    <androidPackage spec="com.android.billingclient:billing:4.1.0" />
+  </androidPackages>
+</dependencies>

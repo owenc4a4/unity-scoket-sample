@@ -1,0 +1,84 @@
+# =============== #
+# Unity generated #
+# =============== #
+Temp/
+Obj/
+UnityGenerated/
+Library/
+Illusion/.vs/
+Illusion/.idea/
+Illusion/Logs
+
+# ================================================= #
+# Visual Studio / MonoDevelop / JetBrains generated #
+# ================================================= #
+ExportedObj/
+*.svd
+*.userprefs
+*.csproj
+*.pidb
+*.suo
+*.sln
+*.user
+*.unityproj
+*.booproj
+Illusion/Assets/Plugins/Editor/JetBrains*
+
+# ============ #
+# OS generated #
+# ============ #
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+#Icon?
+ehthumbs.db
+Thumbs.db
+
+# =============== #
+# App generated #
+# =============== #
+Illusion/LocalStorage/*
+
+# =============== #
+# Aries generated #
+# =============== #
+.a2
+
+# ============ #
+# for others   #
+# ============ #
+*.log #log files, for some plugins
+*.pyc #python bytecode cache, for some plugins.
+sysinfo.txt #Unity3D Generated File On Crash Reports
+
+# =================== #
+# negates the pattern #
+# =================== #
+# spine
+!spine-csharp.csproj
+!spine-csharp.sln
+
+# SRDebugger
+#!Illusion/Assets/Vendor/StompyRobot/SRDebugger/Editor/Icons
+#!Illusion/Assets/Vendor/StompyRobot/SRDebugger/UI/Sprites/Default/Icons
+
+# NotchSolution
+#!Illusion/Assets/Vendor/NotchSolution-master/Icons
+
+# NextGenSprites
+#Illusion/Assets/Vendor/NextGenSprites/Utils/Editor/Icons
+
+# Firebase
+Illusion/Assets/Plugins/Android/FirebaseApp.androidlib*
+
+
+*.log
+.vscode
+.vsconfig
+UserSettings
+Assets/Samples/Timeline
+Assets/Samples/Timeline.meta
+Assets/TextMesh\ Pro
+Assets/TextMesh\ Pro.meta
