@@ -16,6 +16,31 @@ public class Sample : MonoBehaviour
 {
 
     public TMP_Text _loginTxt;
+    public TMP_Text _lauunchTxt;
+
+    void OnEnable()
+	{
+		Application.logMessageReceived += HandleLog;
+	}
+
+	void OnDisable()
+	{
+		Application.logMessageReceived -= HandleLog;
+	}
+
+    private void HandleLog(string condition, string stackTrace, LogType type)
+	{
+		switch( type )
+		{
+			case LogType.Error:
+			case LogType.Exception:
+				//SLog(condition + "\n" + stackTrace);
+
+                _lauunchTxt.text = _lauunchTxt.text + condition + "\n" + stackTrace;
+
+				break;
+		}
+	}
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +52,9 @@ public class Sample : MonoBehaviour
         var args = System.Environment.GetCommandLineArgs();
         var str = string.Join(" ", args);
 
-        SLog(str);
+        //SLog(str);
+        Debug.Log(str);
+        _lauunchTxt.text = str;
 
         ConnectToServer("127.0.0.1", 40712);
 
@@ -52,6 +79,7 @@ public class Sample : MonoBehaviour
     private TcpClient client;
     private NetworkStream stream;
     private byte[] receiveBuffer = new byte[1024];
+    private byte[] sendBuffer = new byte[1024];
 
     private void ConnectToServer(string ipAddress, int port)
     {
@@ -89,14 +117,17 @@ public class Sample : MonoBehaviour
                 int event_length = 256 * receiveBuffer[2];
                 event_length += receiveBuffer[3];
 
+                SLog("----- recieve ----");
                 SLog("cliendID " + _clientId);
+                SLog("bytesRead " + bytesRead);
                 SLog("eventType " + eventType);
-                SLog("0 " + receiveBuffer[2]);
-                SLog("1 " + receiveBuffer[3]);
+                SLog("msgl 0 " + receiveBuffer[2]);
+                SLog("msgl 1 " + receiveBuffer[3]);
                 SLog("event_length " + event_length);
 
                 if (eventType == 0) {
                     SLog("Connected");
+                    SendMsgToClient("from unity connected");
                 } else if (eventType == 1) {
                     SLog("Disconnected");
                 } else if (eventType == 2) {
@@ -142,33 +173,36 @@ public class Sample : MonoBehaviour
 
     public void OnBtnSendMsg()
     {
-        _logmsg = _logmsg + "send new msg\n";
-        _logText.text = _logmsg;
-
         // Send initial data to the server
         string initialMessage = "Hello, server! I Client...";
-        byte[] initialMessageBytes = Encoding.UTF8.GetBytes(initialMessage);
+        SendMsgToClient(initialMessage);
+    }
+
+    void SendMsgToClient(string msg)
+    {
+        SLog("----- send new msg -----");
+        byte[] initialMessageBytes = Encoding.UTF8.GetBytes(msg);
         var message_length = initialMessageBytes.Length;
-
-
-
-        Debug.Log("_clientId " + _clientId);
-        Debug.Log("message_length " + message_length);
-        Debug.Log("message_length 0 " + (message_length / 256));
-        Debug.Log("message_length 1 " + (message_length % 256));
 
         SLog("_clientId " + _clientId);
         SLog("message_length " + message_length);
         SLog("message_length 0 " + (message_length / 256));
         SLog("message_length 1 " + (message_length % 256));
 
+        // stream.WriteByte(_clientId);
+        // stream.WriteByte((byte)2);
+        // stream.WriteByte();
+        // stream.WriteByte();
 
-        stream.WriteByte(_clientId);
-        stream.WriteByte((byte)2);
-        stream.WriteByte((byte)(message_length / 256));
-        stream.WriteByte((byte)(message_length % 256));
+        sendBuffer[0] = _clientId;
+        sendBuffer[1] = 2;
+        sendBuffer[2] = (byte)(message_length / 256);
+        sendBuffer[3] = (byte)(message_length % 256);
 
-        stream.Write(initialMessageBytes, 0, initialMessageBytes.Length);
+        Buffer.BlockCopy(initialMessageBytes, 0, sendBuffer, 4, message_length);
+
+        //stream.Write(initialMessageBytes, 0, initialMessageBytes.Length);
+        stream.Write(sendBuffer, 0, message_length + 4);
         stream.Flush();
     }
 
