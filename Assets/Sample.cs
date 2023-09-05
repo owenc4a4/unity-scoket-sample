@@ -173,8 +173,6 @@ public class Sample : MonoBehaviour
 
     public void OnBtnSendMsg()
     {
-        throw new NotImplementedException();
-
         // Send initial data to the server
         string initialMessage = "Hello, server! I Client...";
         SendMsgToClient(initialMessage);
