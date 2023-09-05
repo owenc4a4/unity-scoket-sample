@@ -36,7 +36,7 @@ public class Sample : MonoBehaviour
 			case LogType.Exception:
 				//SLog(condition + "\n" + stackTrace);
 
-                _lauunchTxt.text = _lauunchTxt.text + condition + "\n" + stackTrace;
+                _lauunchTxt.text = _lauunchTxt.text + "\n---\n" + condition + "\n" + stackTrace;
 
 				break;
 		}
@@ -46,7 +46,7 @@ public class Sample : MonoBehaviour
     void Start()
     {
 #if UNITY_2022_3_OR_NEWER || !UNITY_2019_1_OR_NEWER
-        Debug.LogError("yes");
+        Debug.LogWarning("yes");
 #endif
 
         var args = System.Environment.GetCommandLineArgs();
@@ -173,6 +173,8 @@ public class Sample : MonoBehaviour
 
     public void OnBtnSendMsg()
     {
+        throw new NotImplementedException();
+
         // Send initial data to the server
         string initialMessage = "Hello, server! I Client...";
         SendMsgToClient(initialMessage);
